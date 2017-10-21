@@ -1,0 +1,24 @@
+{
+  "name": "memePI",
+  "version": "1.0.0",
+  "description": "A simple app to play with rest APIs",
+  "main": "main.js",
+  "dependencies": {
+    "electron": "^1.7.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "meme",
+    "memes",
+    "REST",
+    "api",
+    "restful",
+    "electron"
+  ],
+  "author": "Nicholas O'Brien <nicholas.obrien@ucc.on.ca> (http://obrien.tech)",
+  "license": "MIT"
+}
