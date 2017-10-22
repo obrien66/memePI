@@ -3,8 +3,8 @@
 	<head>
         <meta charset="UTF-8">
         <title>MemePI</title>
-        <link rel="stylesheet" type="text/css" href="node_modules/shoelace-css/dist/shoelace.css">
-        <link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="shoelace.css">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="support.css">
 	</head>
 	<body>
@@ -42,15 +42,16 @@
 				const req = http.request(options, (res) => {
 					var {headers, statusCode} = res
 					var type = headers["content-type"]
+
 				  	res.setEncoding('utf8');
 
-
+					let heads = ""
 				  	let file = ""
 				  	res.on('data', (chunk) => {
 				    	file += chunk
 				  	});
 				  	res.on('end', () => {
-				  		let heads = ""
+
 				  		for (key in headers){
                             let adding = `${key}: ${headers[key]}\n`
                             heads += adding
@@ -65,7 +66,7 @@
 
 				req.on('error', (e) => {
 					frame.document.write(`Problem with request: ${e.message}<br>`)
-					throw e
+					// throw e
 				});
 
 				// write data to request body

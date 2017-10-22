@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>MemePI</title>
-        <link rel="stylesheet" type="text/css" href="node_modules/shoelace-css/dist/shoelace.css">
-        <link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="shoelace.css">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="support.css">
     </head>
     <body>
@@ -36,6 +36,7 @@
                     }
 
                     else {
+
                         var {statusCode, headers} = res
                         var type = headers["content-type"] || headers["Content-type"] || headers["Content-Type"]
                         let heads = ""
@@ -53,6 +54,10 @@
                             res.resume()
                             return
                         }
+
+                        console.log(body)
+                        res.setEncoding("utf8")
+                        body = body.toString()
 
                         let file = ""
                         file += type !== "text/html" ? "<style>@font-face {font-family: 'Inconsolata';src: url('./Inconsolata/Inconsolata-Regular.ttf');}body{font-family: 'Inconsolata';}</style>"+ inspect(body) : inspect(body)
