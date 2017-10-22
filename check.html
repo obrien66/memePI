@@ -6,9 +6,10 @@
   </head>
   <body>
     <script type="text/javascript">
+
       function displayFrame(){
         var url = document.getElementById('url').value
-        document.getElementById('iframe').innerHTML = `<iframe src="${url}" style="width:100vw; height:80vh; left:0;border:none;">${url} may have failed. Check console</iframe>`
+        document.getElementById('iframe').innerHTML = `<iframe src="${url}" style="width:100vw; height:80vh; left:0;border:none;"></iframe>`
         var req = new XMLHttpRequest();
         req.open('GET', url, false);
         req.send(null);

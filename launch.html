@@ -7,15 +7,25 @@
 	<script>
 		var {rest} = require("./launch_rest")
 
+		function server() {
+			var json = document.getElementById('json').value
+			var port = document.getElementById('port').value
+
+			document.getElementById('serving').innerHTML = `serving at http://localhost:${port}`
+
+			rest(json, port)
+		}
 	</script>
 	<h1>Serve JSON</h1>
+	<p><em>Close window to stop running server</em></p>
+
 	<center>
-		<textarea style="font-family: monospace; resize: none; width: 90vw;height: 60vh;">
-{example: "JSON"}
-		</textarea>
+		<textarea id="json" style="font-family: monospace; resize: none; width: 90vw;height: 60vh;">
+{example: "JSON"}</textarea>
 		<br>
 		<input type="text" id="port" placeholder="port">
-		<button onclick="server()">Serve</button>
+		<button onclick="server()">Serve</button><hr>
+		<span id="serving"></span>
 	</center>
 </body>
 </html>
