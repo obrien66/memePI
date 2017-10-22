@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>MemePI</title>
@@ -9,7 +9,8 @@
     </head>
     <body>
         <script type="text/javascript">
-            var http = require("http")
+            var needle = require("needle")
+            var {inspect} = require("util")
 
             function displayFrame(){
                 var url = document.getElementById('url').value
@@ -22,49 +23,42 @@
                 // req.send(null);
 
                 // var headers = req.getAllResponseHeaders()
+                frame = document.getElementById('iframe')
+                frame = frame.contentWindow || frame.contentDocument.document || frame.contentDocument;
+                frame.document.open()
 
+                needle.get(url, (err, res, body) => {
 
-
-                http.get(url, (res) => {
-                    var {statusCode, headers} = res
-                    var type = headers["content-type"]
-
-
-
-                    let heads = ""
-
-                    for (key in headers){
-                        let adding = `${key}: ${headers[key]}\n`
-                        heads += adding
-                    }
-                    document.getElementById('headers').innerHTML = heads
-
-                    frame = document.getElementById('iframe')
-                    // frame..contentDocument.body.style.fontFamily = "Inconsolata"
-                    frame = frame.contentWindow || frame.contentDocument.document || frame.contentDocument;
-                    frame.document.open()
-
-
-                    if (statusCode !== 200) {
-                        frame.document.write(`Failed to get ${url}<br>Error: ${statusCode}`)
+                    if (err) {
+                        frame.document.write(`Failed to get ${url}<br>Code error: ${err.message}`)
                         res.resume()
                         return
                     }
 
-                    if (type === "text/html") {
-                        document.getElementById('err').innerHTML = '<div class="alert alert-danger"><strong>Danger!</strong> This application will not render the external resources for HTML files. All other data is accurate.</div>'
+                    else {
+                        var {statusCode, headers} = res
+                        var type = headers["content-type"] || headers["Content-type"] || headers["Content-Type"]
+                        let heads = ""
+
+                        for (key in headers){
+                            let adding = `${key}: ${headers[key]}\n`
+                            heads += adding
+                        }
+                        document.getElementById('headers').innerHTML = heads
+                        document.getElementById('status').innerHTML = statusCode
+
+                        if (statusCode !== 200) {
+                            let msg = `HTTP error: ${statusCode}<br>${url}`
+                            frame.document.write(msg)
+                            res.resume()
+                            return
+                        }
+
+                        let file = ""
+                        file += type !== "text/html" ? "<style>@font-face {font-family: 'Inconsolata';src: url('./Inconsolata/Inconsolata-Regular.ttf');}body{font-family: 'Inconsolata';}</style>"+ inspect(body) : inspect(body)
+                        frame.document.write(file)
 
                     }
-
-                    let file = ''
-                    res.setEncoding('utf8')
-                    res.on('data', (chunk) => {
-                        file += chunk
-                    })
-                    res.on('end', ()=> {
-                        file += type !== "text/html" ? "<style>@font-face {font-family: 'Inconsolata';src: url('./Inconsolata/Inconsolata-Regular.ttf');}body{font-family: 'Inconsolata';}</style>" : ""
-                        frame.document.write(file)
-                    })
                 })
             }
     </script>
@@ -83,29 +77,17 @@
         <div class="col-10 offset-1">
             <h3>Headers</h3>
             <pre id="headers"></pre>
+            <h5>Status</h5>
+            <pre id="status"></pre>
         </div>
     </div>
 
     <div class="row">
         <div class="col-10 offset-1">
             <h3>Browser content</h3>
-            <hr>
             <div id="err"></div>
             <iframe class="iframe" id="iframe" width="100%"></iframe>
         </div>
     </div>
-    <div class="row">
-        <div class="col-10 offset-1">
-            <hr>
-            <ul>
-                <li><a href="http://obrien.tech">Nick O'Brien</a> (developer)</li>
-                <li><a href="https://github.com/obrien66/memepi">Github repository</a></li>
-            </ul>
-
-        </div>
-    </div>
-
-
-
   </body>
 </html>

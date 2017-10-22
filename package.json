@@ -6,6 +6,7 @@
   "dependencies": {
     "electron": "^1.7.9",
     "font-awesome": "^4.7.0",
+    "needle": "^2.0.1",
     "shoelace-css": "^1.0.0-beta24"
   },
   "devDependencies": {},
