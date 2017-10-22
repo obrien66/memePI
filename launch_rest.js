@@ -9,7 +9,7 @@ module.exports.rest = function(userdata, userport){
 				'Content-Encoding': 'utf8',
 				'Content-Length': Buffer.byteLength(data)
 		})
-			res.end(util.inspect(data))
+			res.end(data)
 		}).listen(port)
 	})(userdata, userport)
 }

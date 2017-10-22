@@ -1,0 +1,31 @@
+@font-face {
+	font-family: "Inconsolata";
+	src: url("./Inconsolata/Inconsolata-Regular.ttf");
+}
+@font-face {
+	font-family: "Inconsolata";
+	font-weight: bold;
+	src: url("./Inconsolata/Inconsolata-Bold.ttf");
+}
+
+textarea {
+	font-family: "Inconsolata", monospace;
+	resize: none;
+	height: 50vh;
+}
+
+pre {
+	font-family: "Inconsolata", monospace;
+}
+
+#iframe {
+	border-style: solid;
+	border-color: #0074d9;
+	border-radius: 6px;
+	border-width: 1px;
+}
+
+iframe {
+	position: relative;
+	overflow: hidden;
+}
