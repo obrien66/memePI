@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>MemePI</title>
+        <link rel="stylesheet" type="text/css" href="node_modules/shoelace-css/dist/shoelace.css">
+        <link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="support.css">
+    </head>
+    <body>
+        <script type="text/javascript">
+            var http = require("http")
+
+            function displayFrame(){
+                var url = document.getElementById('url').value
+
+                // document.getElementById('iframe').innerHTML = `<iframe src="${url}" style="width:100vw; height:80vh; left:0;border:none;"></iframe>`
+
+                // var req = new XMLHttpRequest();
+
+                // req.open('GET', url, false);
+                // req.send(null);
+
+                // var headers = req.getAllResponseHeaders()
+
+
+
+                http.get(url, (res) => {
+                    var {statusCode, headers} = res
+                    var type = headers["content-type"]
+
+
+
+                    let heads = ""
+
+                    for (key in headers){
+                        let adding = `${key}: ${headers[key]}\n`
+                        heads += adding
+                    }
+                    document.getElementById('headers').innerHTML = heads
+
+                    frame = document.getElementById('iframe')
+                    // frame..contentDocument.body.style.fontFamily = "Inconsolata"
+                    frame = frame.contentWindow || frame.contentDocument.document || frame.contentDocument;
+                    frame.document.open()
+
+
+                    if (statusCode !== 200) {
+                        frame.document.write(`Failed to get ${url}<br>Error: ${statusCode}`)
+                        res.resume()
+                        return
+                    }
+
+                    if (type === "text/html") {
+                        document.getElementById('err').innerHTML = '<div class="alert alert-danger"><strong>Danger!</strong> This application will not render the external resources for HTML files. All other data is accurate.</div>'
+
+                    }
+
+                    let file = ''
+                    res.setEncoding('utf8')
+                    res.on('data', (chunk) => {
+                        file += chunk
+                    })
+                    res.on('end', ()=> {
+                        file += type !== "text/html" ? "<style>@font-face {font-family: 'Inconsolata';src: url('./Inconsolata/Inconsolata-Regular.ttf');}body{font-family: 'Inconsolata';}</style>" : ""
+                        frame.document.write(file)
+                    })
+                })
+            }
+    </script>
+
+    <div class="row">
+        <div class="col-10 offset-1">
+            <h1>View <i class="fa fa-camera-retro"></i></h1>
+            <div class="input-group">
+                <input type="text" id="url" value="http://">
+                <button type="button" class="button" onclick="displayFrame()">Check out url</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-10 offset-1">
+            <h3>Headers</h3>
+            <pre id="headers"></pre>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-10 offset-1">
+            <h3>Browser content</h3>
+            <hr>
+            <div id="err"></div>
+            <iframe class="iframe" id="iframe" width="100%"></iframe>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-10 offset-1">
+            <hr>
+            <ul>
+                <li><a href="http://obrien.tech">Nick O'Brien</a> (developer)</li>
+                <li><a href="https://github.com/obrien66/memepi">Github repository</a></li>
+            </ul>
+
+        </div>
+    </div>
+
+
+
+  </body>
+</html>
