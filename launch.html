@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MemePI</title>
+</head>
+<body>
+	<script>
+		var {rest} = require("./launch_rest")
+
+	</script>
+	<h1>Serve JSON</h1>
+	<center>
+		<textarea style="font-family: monospace; resize: none; width: 90vw;height: 60vh;">
+{example: "JSON"}
+		</textarea>
+		<br>
+		<input type="text" id="port" placeholder="port">
+		<button onclick="server()">Serve</button>
+	</center>
+</body>
+</html>

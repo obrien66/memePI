@@ -1,7 +1,6 @@
 const electron = require('electron')
-const {app, Menu} = electron
+const {app, Menu, remote, BrowserWindow} = electron
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
 
 const path = require('path')
 const url = require('url')
@@ -31,46 +30,107 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
-  var template = [{
-    label: "Application",
+  const template = [
+  {
+    label: 'Edit',
     submenu: [
-        { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
-        { label: "Developer Tools", accelerator: "Command+T", click: function() { mainWindow.webContents.openDevTools() }},
-        { type: "separator" },
-        { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }},
-        { label: "New Window", accelerator: "Command+N", click: () => {
-          mainWindow = new BrowserWindow({width: 800, height: 600})
-
-            mainWindow.loadURL(url.format({
-                pathname: path.join(__dirname, 'index.html'),
-                protocol: 'file:',
-                slashes: true
-            }))
-
-            mainWindow.on('closed', function () {
-
-            mainWindow = null
-        })
-        }},
-        { label: "Close Window", accelerator: "Command+W", click: () => {
-          mainWindow.close()
-        }}
-    ]}, {
-    label: "Edit",
+      {role: 'undo'},
+      {role: 'redo'},
+      {type: 'separator'},
+      {role: 'cut'},
+      {role: 'copy'},
+      {role: 'paste'},
+      {role: 'pasteandmatchstyle'},
+      {role: 'delete'},
+      {role: 'selectall'}
+    ]
+  },
+  {
+    label: 'View',
     submenu: [
-        { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-        { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
-        { type: "separator" },
-        { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-        { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-        { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-        { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
-    ]}
+      {role: 'reload'},
+      {role: 'forcereload'},
+      {role: 'toggledevtools'},
+      {type: 'separator'},
+      {role: 'resetzoom'},
+      {role: 'zoomin'},
+      {role: 'zoomout'},
+      {type: 'separator'},
+      {role: 'togglefullscreen'}
+    ]
+  },
+  {
+    role: 'window',
+    submenu: [
+      {role: 'minimize'},
+      {role: 'close'}
+    ]
+  },
+  {
+    role: 'help',
+    submenu: [
+      {
+        label: 'Learn More',
+        click () { require('electron').shell.openExternal('https://electron.atom.io') }
+      }
+    ]
+  }
+]
 
-];
+if (process.platform === 'darwin') {
+  template.unshift({
+    label: app.getName(),
+    submenu: [
+      {role: 'about'},
+      {type: 'separator'},
+      {role: 'services', submenu: []},
+      {type: 'separator'},
+      {role: 'hide'},
+      {role: 'hideothers'},
+      {role: 'unhide'},
+      {type: 'separator'},
+      {role: 'quit'}
+    ]
+  })
 
-Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+  // Edit menu
+  template[1].submenu.push(
+    {type: 'separator'},
+    {
+      label: 'Speech',
+      submenu: [
+        {role: 'startspeaking'},
+        {role: 'stopspeaking'}
+      ]
+    }
+  )
+
+  // Window menu
+  template[3].submenu = [
+    { label: "New Window", accelerator: "Command+N", click: () => {
+        mainWindow = new BrowserWindow({width: 800, height: 600})
+
+        mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'index.html'),
+            protocol: 'file:',
+            slashes: true
+        }))
+
+        mainWindow.on('closed', function () {
+
+        mainWindow = null
+      })
+    }},
+    {role: 'close'},
+    {role: 'minimize'},
+    {role: 'zoom'},
+    {type: 'separator'},
+    {role: 'front'}
+  ]
 }
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)}
 
 
 

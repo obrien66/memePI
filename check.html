@@ -2,23 +2,27 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>See api</title>
+    <title>MemePI</title>
   </head>
   <body>
     <script type="text/javascript">
       function displayFrame(){
         var url = document.getElementById('url').value
-        document.getElementById('iframe').innerHTML = `<iframe src="${url}" style="width:100vw; height:80vh; left:0;">${url} may have failed. Check console</iframe>`
+        document.getElementById('iframe').innerHTML = `<iframe src="${url}" style="width:100vw; height:80vh; left:0;border:none;">${url} may have failed. Check console</iframe>`
         var req = new XMLHttpRequest();
         req.open('GET', url, false);
         req.send(null);
         var headers = req.getAllResponseHeaders()
         document.getElementById('headers').innerHTML = headers
+        console.log(headers);
       }
     </script>
-    <input type="text" id="url" value="http://"> <button onclick="displayFrame()">Check out url</button><br><br>
-    <h5></h5>
-    <div id="headers" style="font-family: monospace;"></div>
+    <center><input type="text" id="url" value="http://" style="width: 75vw;"><br> <button onclick="displayFrame()">Check out url</button></center>
+    <h3>Headers</h3>
+    <pre id="headers" style="font-family: monospace;"></pre>
+
+    <h3>Browser content</h3>
+    <hr>
     <div id="iframe"></div>
 
   </body>
