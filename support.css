@@ -10,7 +10,7 @@
 
 textarea {
 	font-family: "Inconsolata", monospace;
-	resize: none;
+	resize: vertical;
 	height: 50vh;
 }
 
@@ -18,14 +18,16 @@ pre {
 	font-family: "Inconsolata", monospace;
 }
 
-#iframe {
+.iframe {
 	border-style: solid;
 	border-color: #0074d9;
 	border-radius: 6px;
 	border-width: 1px;
+	resize: vertical;
+	font-family: "Inconsolata"
 }
 
-iframe {
-	position: relative;
-	overflow: hidden;
+code:focus {
+	outline: 0;
+	width:100%;
 }

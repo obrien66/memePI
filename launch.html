@@ -27,9 +27,13 @@
 				serving.innerHTML = `Server is already running! (http://localhost:${port})`
 			}
 			else {
-				serving.innerHTML = `serving at http://localhost:${port}`
+				serving.innerHTML = `Serving at http://localhost:${port}`
 				running = true
-				rest(json, port)
+
+				try {rest(json, port)}
+				catch (err) {
+					serving.innerHTML = `Port ${port} is in use`
+				}
 
 			}
 
@@ -63,7 +67,9 @@
 		</div>
 	</div>
 	<div class="row">
+
 		<div class="col-10 offset-1">
+			<hr>
 			<ul>
 				<li><a href="http://obrien.tech">Nick O'Brien</a> (developer)</li>
 				<li><a href="https://github.com/obrien66/memepi">Github repository</a></li>

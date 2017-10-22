@@ -8,22 +8,21 @@
 </head>
 <body>
 
-	<style type="text/css">
-		ul {list-style-type: none}
-	</style>
+	<style type="text/css">ul {list-style-type: none}</style>
 	<div class="row">
 		<div class="col-10 offset-1">
 			<h1>MemePI</h1>
 			<img id="meme" width="150px" height="150px">
 			<br><hr>
 			<ul>
-				<li style="padding-bottom: 1rem;"><a class="button active" href="check.html">View an API <i class="fa fa-camera-retro"></i></a></li>
+				<li style="padding-bottom: 1rem;"><a class="button active" href="get.html">View an API <i class="fa fa-camera-retro"></i></a></li>
 				<li><a class="button active" href="launch.html">Launch an API <i class="fa fa-rocket"></i></a></li>
 			</ul>
 		</div>
 	</div>
 	<script type="text/javascript">
-		qMemes = 9
+		// la Quantity del memes
+		qMemes = 8
 		memeNum = Math.floor(Math.random() * qMemes)
 
 		document.getElementById("meme").src = `memes/meme${(()=>{return memeNum > 0 ? memeNum : 1})()}.svg`
