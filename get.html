@@ -9,7 +9,7 @@
     </head>
     <body>
         <script type="text/javascript">
-            var needle = require("needle")
+            var http = require("http")
             var {inspect} = require("util")
 
             function displayFrame(){
@@ -27,43 +27,38 @@
                 frame = frame.contentWindow || frame.contentDocument.document || frame.contentDocument;
                 frame.document.open()
 
-                needle.get(url, (err, res, body) => {
+                http.get(url, (res) => {
+                    var {statusCode, headers} = res
+                    var type = headers["content-type"] || headers["Content-type"] || headers["Content-Type"]
+                    let heads = ""
 
-                    if (err) {
-                        frame.document.write(`Failed to get ${url}<br>Code error: ${err.message}`)
+                    for (key in headers){
+                        let adding = `${key}: ${headers[key]}\n`
+                        heads += adding
+                    }
+                    document.getElementById('headers').innerHTML = heads
+                    document.getElementById('status').innerHTML = statusCode
+
+                    if (statusCode !== 200) {
+                        let msg = `HTTP error: ${statusCode}<br>${url}`
+                        frame.document.write(msg)
                         res.resume()
                         return
                     }
 
-                    else {
+                    res.setEncoding("utf8")
 
-                        var {statusCode, headers} = res
-                        var type = headers["content-type"] || headers["Content-type"] || headers["Content-Type"]
-                        let heads = ""
-
-                        for (key in headers){
-                            let adding = `${key}: ${headers[key]}\n`
-                            heads += adding
-                        }
-                        document.getElementById('headers').innerHTML = heads
-                        document.getElementById('status').innerHTML = statusCode
-
-                        if (statusCode !== 200) {
-                            let msg = `HTTP error: ${statusCode}<br>${url}`
-                            frame.document.write(msg)
-                            res.resume()
-                            return
-                        }
-
-                        console.log(body)
-                        res.setEncoding("utf8")
-                        body = body.toString()
-
-                        let file = ""
-                        file += type !== "text/html" ? "<style>@font-face {font-family: 'Inconsolata';src: url('./Inconsolata/Inconsolata-Regular.ttf');}body{font-family: 'Inconsolata';}</style>"+ inspect(body) : inspect(body)
+                    let file = ""
+                    res.on('data', (chunk) => {
+                        file += chunk
+                    })
+                    res.on('end', ()=> {
+                        file += type !== "text/html" ? "<style>@font-face {font-family: 'Inconsolata';src: url('./Inconsolata/Inconsolata-Regular.ttf');}body{font-family: 'Inconsolata';}</style>": ""
                         frame.document.write(file)
+                    })
 
-                    }
+
+
                 })
             }
     </script>
