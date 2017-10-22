@@ -4,7 +4,9 @@
   "description": "A simple app to play with rest APIs",
   "main": "main.js",
   "dependencies": {
-    "electron": "^1.7.9"
+    "electron": "^1.7.9",
+    "font-awesome": "^4.7.0",
+    "shoelace-css": "^1.0.0-beta24"
   },
   "devDependencies": {},
   "scripts": {

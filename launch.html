@@ -1,31 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+	<meta charset="utf-8">
 	<title>MemePI</title>
+	<link rel="stylesheet" type="text/css" href="node_modules/shoelace-css/dist/shoelace.css">
+	<link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="support.css">
 </head>
 <body>
 	<script>
 		var {rest} = require("./launch_rest")
+		var running = false
 
 		function server() {
+			console.log("Click");
 			var json = document.getElementById('json').value
 			var port = document.getElementById('port').value
 
-			document.getElementById('serving').innerHTML = `serving at http://localhost:${port}`
+			var serving = document.getElementById('serving')
+			//
 
-			rest(json, port)
+			if (port.length < 1) {
+				serving.innerHTML = "One or more of your fields are empty"
+			}
+			else if (running) {
+				serving.innerHTML = `Server is already running! (http://localhost:${port})`
+			}
+			else {
+				serving.innerHTML = `serving at http://localhost:${port}`
+				running = true
+				rest(json, port)
+
+			}
+
 		}
 	</script>
-	<h1>Serve JSON</h1>
-	<p><em>Close window to stop running server</em></p>
+	<div class="row">
+		<div class="col-10 offset-1">
+			<h1>Launch <i class="fa fa-rocket"></i></h1>
+			<p>Close window to stop running server</p>
+		</div>
+	</div>
 
-	<center>
-		<textarea id="json" style="font-family: monospace; resize: none; width: 90vw;height: 60vh;">
+	<div class="row">
+		<div class="col-10 offset-1">
+			<div class="alert" id="serving">Server not running</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-10 offset-1">
+			<textarea id="json">
 {example: "JSON"}</textarea>
-		<br>
-		<input type="text" id="port" placeholder="port">
-		<button onclick="server()">Serve</button><hr>
-		<span id="serving"></span>
-	</center>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-10 offset-1">
+			<div class="input-group">
+				<input type="text" id="port" placeholder="port">
+				<button type="button" class="button" onclick="server()">Serve</button>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-10 offset-1">
+			<ul>
+				<li><a href="http://obrien.tech">Nick O'Brien</a> (developer)</li>
+				<li><a href="https://github.com/obrien66/memepi">Github repository</a></li>
+			</ul>
+
+		</div>
+	</div>
 </body>
 </html>
